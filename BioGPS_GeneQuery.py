@@ -9,9 +9,9 @@ import itertools as it
 import csv 
 import pandas
 
-def BioGPS_gene_expression(gene_list, brain_region, species):
+def BioGPS_gene_expression(gene_file, brain_region, species):
     #read list of genes
-    gene_list = [gene.rstrip('\n') for gene in open(gene_list)] 
+    gene_list = [gene.rstrip('\n') for gene in open(gene_file)] 
     genes = list(set(gene_list)) # removes duplicates
     
     gene_reads = []
@@ -41,7 +41,7 @@ def BioGPS_gene_expression(gene_list, brain_region, species):
                             break
                     else:
                         probes.append('No probes in BioGPS')
-                        break
+                        
                 # If no hits matching exactly by name, take first hit
                 elif len(BGPSdict['hits']) > 0:
                     ids.append(hits[0]['_id'])
@@ -97,7 +97,7 @@ def BioGPS_gene_expression(gene_list, brain_region, species):
         else:
             expression_vals.append('probe not in list')
     
-    with open(brain_region + '_expression.csv', 'wb') as thefile:
+    with open(gene_file[:-4] + "_" + brain_region + '_expression.csv', 'wb') as thefile:
         writer = csv.writer(thefile)
         writer.writerow(["Gene", "ID", "Probe", brain_region + " Expression"])
         writer.writerows(it.izip_longest(row_genes, ids_genes, allprobes, expression_vals))
