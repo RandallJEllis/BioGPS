@@ -42,7 +42,7 @@ def BioGPS_gene_expression(gene_file, brain_region, species):
                     else:
                         probes.append('No probes in BioGPS')
                         
-                # If no hits matching exactly by name, take first hit
+                # If no hits match exactly by name, take first hit
                 elif len(BGPSdict['hits']) > 0:
                     ids.append(hits[0]['_id'])
                     id_query = requests.get('http://mygene.info/v2/gene/' + hits[0]['_id']) # Response object
